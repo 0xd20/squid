@@ -1,0 +1,55 @@
+[server load Balance]
+
+1. install squid 
+$ apt install squid
+
+2. restart dan enable
+$ systemctl restart squid
+$ systemctl enable squid
+
+3. konfigurasi squid
+$ vim /etc/squid/squid.conf
+
+-comment acl localnet, 
+-tambahkan acl mynet src 172.23.0.0/20
+-comment http_access deny all               
+-comment https_access deny to_localhost.     
+-comment http_access allow localhost         
+-tambahkan http_access allow mynet           
+-uncoment cache_dir
+
+$ configure block domain
+
+acl blocked dstdomain "/etc/squid/list-domain"
+    http_access deny blocked
+    
+
+save
+
+$ buat file yang isinya domain yang ingin di block
+
+vim /etc/squid/list-domain
+
+www.facebook.com
+facebook.com
+youtube.com
+www.youtube.com
+    
+    
+save
+
+$ restart
+systemctl restart squid
+
+$ tail -f /var/log/squid/access.log
+
+mapping ip squid ke local laptop masing2
+ 
+kalo windows tinggal di search ajh, nama fiturnya proxy setting, tinggal masukin ip proxynya
+
+kalo mac, system setting > network > pilih internetnya > klik details > proxies > enable web proxy http & https > masukin ip proxnyanya & port 3128
+
+
+
+
+
